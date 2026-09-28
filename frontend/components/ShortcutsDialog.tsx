@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef } from "react";
+import { useLenis } from "lenis/react";
 
 type ShortcutsDialogProps = {
   open: boolean;
@@ -30,6 +31,22 @@ function getFocusable(container: HTMLElement): HTMLElement[] {
 export default function ShortcutsDialog({ open, onClose }: ShortcutsDialogProps) {
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
+  const lenis = useLenis();
+
+  // Pause smooth scrolling while the dialog is open so the page behind does not move
+  useEffect(() => {
+    if (!lenis) {
+      return;
+    }
+    if (open) {
+      lenis.stop();
+    } else {
+      lenis.start();
+    }
+    return () => {
+      lenis.start();
+    };
+  }, [lenis, open]);
 
   // Trap Tab inside the dialog, close on Escape, and restore focus when it shuts
   useEffect(() => {
@@ -83,11 +100,11 @@ export default function ShortcutsDialog({ open, onClose }: ShortcutsDialogProps)
   }
 
   return (
-    <div className="fixed inset-0 z-40 flex items-end justify-center p-4 sm:items-center">
+    <div className="fixed inset-0 z-40 flex items-end justify-center p-4 sm:items-center" data-lenis-prevent>
       <button
         type="button"
         aria-label="Close shortcuts"
-        className="absolute inset-0 bg-slate-900/50 dark:bg-black/60"
+        className="absolute inset-0 bg-slate-900/50 motion-safe:transition-opacity dark:bg-black/60"
         onClick={onClose}
       />
       <div
@@ -95,7 +112,7 @@ export default function ShortcutsDialog({ open, onClose }: ShortcutsDialogProps)
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="relative z-10 w-full max-w-md rounded-2xl border border-slate-200 bg-white p-4 shadow-xl dark:border-slate-700 dark:bg-slate-900 sm:p-6"
+        className="animate-dialog-in relative z-10 w-full max-w-md rounded-2xl border border-slate-200 bg-white p-4 shadow-xl dark:border-slate-700 dark:bg-slate-900 sm:p-6"
       >
         <div className="mb-3 flex items-start justify-between gap-3">
           <h2 id={titleId} className="text-lg font-semibold text-slate-900 dark:text-slate-100">

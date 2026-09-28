@@ -32,8 +32,8 @@ export default function Toasts({ toasts }: ToastsProps) {
           role={toast.kind === "error" ? "alert" : "status"}
           className={
             toast.kind === "error"
-              ? "pointer-events-auto rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800 shadow-lg dark:border-red-800 dark:bg-red-950 dark:text-red-200"
-              : "pointer-events-auto rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-lg dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
+              ? "animate-toast-in pointer-events-auto rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800 shadow-lg dark:border-red-800 dark:bg-red-950 dark:text-red-200"
+              : "animate-toast-in pointer-events-auto rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-lg dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
           }
         >
           <span>{toast.message}</span>

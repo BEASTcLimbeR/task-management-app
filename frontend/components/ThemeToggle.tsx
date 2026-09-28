@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Moon, Sun } from "lucide-react";
+// Toggle design adapted from Uiverse.io by chase2k25
+
+import { useEffect, useState, type KeyboardEvent } from "react";
+import styles from "./ThemeToggle.module.css";
 
 // Apply the theme class on <html> and remember the choice in localStorage
 function applyTheme(dark: boolean) {
@@ -9,11 +11,23 @@ function applyTheme(dark: boolean) {
   localStorage.setItem("theme", dark ? "dark" : "light");
 }
 
-// Sun/moon button in the header that switches light and dark mode
-export default function ThemeToggle() {
-  const [ready, setReady] = useState(false);
+// Build the pill, knob, and LED (colours come from html.dark in CSS)
+function SwitchFace() {
+  return (
+    <span className={styles.track}>
+      <span className={styles.knob}>
+        <span className={styles.led} />
+      </span>
+    </span>
+  );
+}
 
-  // Wait until after hydration so the sun/moon icon matches the class theme-init.js set
+// Neumorphic header switch that follows the existing theme-init / localStorage logic
+export default function ThemeToggle() {
+  const [mounted, setMounted] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+
+  // After hydration, read the class theme-init.js already set (avoids a mismatch)
   useEffect(() => {
     const media = window.matchMedia("(prefers-color-scheme: dark)");
     function onSystemChange(event: MediaQueryListEvent) {
@@ -21,9 +35,13 @@ export default function ThemeToggle() {
         return;
       }
       document.documentElement.classList.toggle("dark", event.matches);
+      setIsDark(event.matches);
     }
     media.addEventListener("change", onSystemChange);
-    const timer = window.setTimeout(() => setReady(true), 0);
+    const timer = window.setTimeout(() => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+      setMounted(true);
+    }, 0);
     return () => {
       media.removeEventListener("change", onSystemChange);
       window.clearTimeout(timer);
@@ -34,23 +52,37 @@ export default function ThemeToggle() {
   function handleToggle() {
     const next = !document.documentElement.classList.contains("dark");
     applyTheme(next);
+    setIsDark(next);
+  }
+
+  // Space and Enter both flip the switch (role=switch is not always activated by the browser)
+  function handleKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+    if (event.key === " " || event.key === "Enter") {
+      event.preventDefault();
+      handleToggle();
+    }
+  }
+
+  if (!mounted) {
+    return (
+      <span className={styles.switch} aria-hidden="true">
+        <SwitchFace />
+      </span>
+    );
   }
 
   return (
     <button
       type="button"
+      role="switch"
+      aria-checked={isDark}
+      aria-label="Toggle dark mode"
+      title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      className={styles.switch}
       onClick={handleToggle}
-      aria-label="Toggle color theme"
-      className="rounded-lg border border-slate-300 p-2 text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800 dark:focus-visible:ring-sky-400"
+      onKeyDown={handleKeyDown}
     >
-      {ready ? (
-        <>
-          <Sun className="hidden h-4 w-4 dark:block" aria-hidden="true" />
-          <Moon className="block h-4 w-4 dark:hidden" aria-hidden="true" />
-        </>
-      ) : (
-        <span className="block h-4 w-4" aria-hidden="true" />
-      )}
+      <SwitchFace />
     </button>
   );
 }

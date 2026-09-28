@@ -49,7 +49,7 @@ export default function TaskItem({
   onDelete,
 }: TaskItemProps) {
   return (
-    <li className="flex min-w-0 gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800/60">
+    <li className="animate-fade-up flex min-w-0 gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 transition-colors duration-300 dark:border-slate-700 dark:bg-slate-800/60">
       <input
         type="checkbox"
         checked={task.completed}
@@ -62,8 +62,8 @@ export default function TaskItem({
           <h3
             className={
               task.completed
-                ? "text-sm font-medium break-words text-slate-500 line-through dark:text-slate-400"
-                : "text-sm font-medium break-words text-slate-900 dark:text-slate-100"
+                ? "text-sm font-medium break-words text-slate-500 line-through transition-colors duration-300 dark:text-slate-400"
+                : "text-sm font-medium break-words text-slate-900 transition-colors duration-300 dark:text-slate-100"
             }
           >
             {task.title}
