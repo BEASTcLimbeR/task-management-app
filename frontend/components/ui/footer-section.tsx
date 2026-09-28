@@ -202,7 +202,7 @@ export function Footer({
         },
         {
           title: "LinkedIn",
-          href: "https://www.linkedin.com/in/YOUR-LINKEDIN-URL",
+          href: "https://www.linkedin.com/in/rutvij-deo-08aa93194/",
           external: true,
           icon: Linkedin,
         },
@@ -212,7 +212,7 @@ export function Footer({
 
   return (
     <MotionConfig reducedMotion="user">
-    <footer className="relative mx-auto mt-10 flex w-full min-w-0 max-w-5xl flex-col items-center justify-center overflow-x-hidden rounded-t-[2rem] border-t border-slate-200 bg-white px-4 py-6 md:rounded-t-[3rem] md:px-6 dark:border-slate-700 dark:bg-slate-900">
+    <footer className="relative mx-auto mt-10 flex w-full min-w-0 max-w-5xl flex-col items-center justify-center overflow-x-clip rounded-t-[2rem] border-t border-slate-200 bg-white px-4 py-6 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] md:rounded-t-[3rem] md:px-6 dark:border-slate-700 dark:bg-slate-900">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 rounded-[inherit] bg-[radial-gradient(35%_128px_at_50%_0%,rgba(14,165,233,0.14),transparent)] dark:bg-[radial-gradient(35%_128px_at_50%_0%,rgba(255,255,255,0.08),transparent)]"

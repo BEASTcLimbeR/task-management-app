@@ -478,16 +478,16 @@ export default function HomePage({ showLogout = false }: HomePageProps) {
     {preloaderVisible ? (
       <Preloader onFinished={handlePreloaderFinished} />
     ) : null}
-    <div inert={preloaderVisible ? true : undefined}>
-    <main className="mx-auto w-full max-w-[720px] px-4 py-8">
-      <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div className="min-w-0">
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Task Manager App</h1>
+    <div className="min-w-0 max-w-full overflow-x-clip" inert={preloaderVisible ? true : undefined}>
+    <main className="mx-auto w-full min-w-0 max-w-[720px] px-4 py-8 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))]">
+      <header className="mb-6 flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-xl font-bold leading-snug break-words text-slate-900 sm:text-2xl dark:text-slate-100">Task Manager App</h1>
           <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
             {pendingCount} pending · {completedCount} completed
           </p>
         </div>
-        <div className="flex shrink-0 items-center gap-2 self-end sm:self-start">
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
           <button
             type="button"
             aria-label="Keyboard shortcuts"
@@ -511,7 +511,7 @@ export default function HomePage({ showLogout = false }: HomePageProps) {
         </p>
       ) : null}
 
-      <section id="add-task" className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
+      <section id="add-task" className="min-w-0 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
         <TaskForm
           key={editingTask ? String(editingTask.id) : "new"}
           editingTask={editingTask}
@@ -523,7 +523,7 @@ export default function HomePage({ showLogout = false }: HomePageProps) {
         />
       </section>
 
-      <section id="task-list" className="mt-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
+      <section id="task-list" className="mt-6 min-w-0 overflow-x-clip rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
         <FilterTabs
           current={status}
           pendingCount={pendingCount}

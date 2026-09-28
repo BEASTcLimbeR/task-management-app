@@ -16,7 +16,8 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
         autoRaf: true,
         lerp: 0.1,
         duration: 1.2,
-        syncTouch: true,
+        // Touch already scrolls natively; syncing it on iPhone can shift the page sideways
+        syncTouch: false,
       }}
     >
       {children}
