@@ -258,7 +258,17 @@ def delete_task(task_id):
 # Build a Flask app, turn on CORS for the Next.js frontend, and create the table
 def create_app():
     application = Flask(__name__)
-    CORS(application, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+    CORS(
+        application,
+        resources={
+            r"/api/*": {
+                "origins": [
+                    "http://localhost:3000",
+                    "http://127.0.0.1:3000",
+                ]
+            }
+        },
+    )
     application.register_error_handler(ValidationError, handle_validation_error)
     application.add_url_rule("/api/tasks", "list_tasks", list_tasks, methods=["GET"])
     application.add_url_rule("/api/tasks", "create_task", create_task, methods=["POST"])
