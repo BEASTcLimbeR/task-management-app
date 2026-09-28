@@ -10,6 +10,7 @@ import TaskForm from "@/components/TaskForm";
 import TaskList from "@/components/TaskList";
 import ThemeToggle from "@/components/ThemeToggle";
 import Toasts, { type ToastItem } from "@/components/Toasts";
+import { Footer } from "@/components/ui/footer-section";
 import {
   API_URL,
   deleteTask,
@@ -400,7 +401,31 @@ export default function HomePage() {
     [query, sort, tasks],
   );
 
+  // Scroll to the add form and focus Title, same as the N shortcut
+  function handleFooterAddTask() {
+    document.getElementById("add-task")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (editingTask) {
+      focusTitleAfterEditRef.current = true;
+      setEditingTask(null);
+    } else {
+      titleInputRef.current?.focus();
+    }
+  }
+
+  // Set the Pending filter (same as shortcut 2) and scroll to the list
+  function handleFooterPending() {
+    replaceQuery({ status: "pending" });
+    document.getElementById("task-list")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  // Set the Completed filter (same as shortcut 3) and scroll to the list
+  function handleFooterCompleted() {
+    replaceQuery({ status: "completed" });
+    document.getElementById("task-list")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   return (
+    <>
     <main className="mx-auto w-full max-w-[720px] px-4 py-8">
       <header className="mb-6 flex items-start justify-between gap-3">
         <div className="min-w-0">
@@ -432,7 +457,7 @@ export default function HomePage() {
         </p>
       ) : null}
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
+      <section id="add-task" className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
         <TaskForm
           key={editingTask ? String(editingTask.id) : "new"}
           editingTask={editingTask}
@@ -444,7 +469,7 @@ export default function HomePage() {
         />
       </section>
 
-      <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
+      <section id="task-list" className="mt-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
         <FilterTabs
           current={status}
           pendingCount={pendingCount}
@@ -478,5 +503,12 @@ export default function HomePage() {
       <ShortcutsDialog open={shortcutsOpen} onClose={closeShortcuts} />
       <Toasts toasts={toasts} />
     </main>
+    <Footer
+      onAddTask={handleFooterAddTask}
+      onPendingTasks={handleFooterPending}
+      onCompletedTasks={handleFooterCompleted}
+      onOpenShortcuts={() => setShortcutsOpen(true)}
+    />
+    </>
   );
 }
