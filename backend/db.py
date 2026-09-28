@@ -1,16 +1,22 @@
 import os
 import sqlite3
 
-# Use tasks.db next to this file, unless TASKS_DB points somewhere else
-DB_PATH = os.environ.get(
-    "TASKS_DB",
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), "tasks.db"),
-)
+
+# Read TASKS_DB every time so tests can point at a temp file without restarting Python
+def get_db_path():
+    return os.environ.get(
+        "TASKS_DB",
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "tasks.db"),
+    )
+
+
+# Default path used when you run: python db.py
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tasks.db")
 
 
 # Open the database and return rows we can read by column name
 def get_connection():
-    connection = sqlite3.connect(DB_PATH)
+    connection = sqlite3.connect(get_db_path())
     connection.row_factory = sqlite3.Row
     return connection
 
@@ -45,4 +51,4 @@ def row_to_dict(row):
 
 if __name__ == "__main__":
     init_db()
-    print("Database ready at", DB_PATH)
+    print("Database ready at", get_db_path())
