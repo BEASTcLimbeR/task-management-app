@@ -1,0 +1,57 @@
+.goo-filter {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.goo-loader {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  filter: url(#task-goo);
+  animation: rotate-move 2s ease infinite;
+}
+
+.goo-loader .dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 42px;
+  height: 42px;
+  margin: auto;
+  border-radius: 50%;
+}
+
+.goo-loader .dot-1 {
+  background: var(--priority-low-accent);
+  animation: dot-1-move 2s ease infinite, index 6s -2s ease infinite;
+}
+
+.goo-loader .dot-2 {
+  background: var(--priority-medium-accent);
+  animation: dot-2-move 2s ease infinite, index 6s -4s ease infinite;
+}
+
+.goo-loader .dot-3 {
+  background: var(--priority-high-accent);
+  animation: dot-3-move 2s ease infinite, index 6s ease infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .goo-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    filter: none;
+    animation: none;
+  }
+
+  .goo-loader .dot {
+    position: static;
+    margin: 0;
+    animation: none;
+  }
+}

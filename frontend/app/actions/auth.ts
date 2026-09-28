@@ -42,7 +42,10 @@ export async function loginAction(
 
   const cookieStore = await cookies();
   cookieStore.set(getSessionCookieName(), token, getSessionCookieOptions());
-  redirect(nextPath);
+  // One-time flag so the home page can show the preloader after this login
+  const dest = new URL(nextPath, "http://local.invalid");
+  dest.searchParams.set("welcome", "1");
+  redirect(`${dest.pathname}${dest.search}`);
 }
 
 // Clear the session cookie and send the user back to the login page

@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Keyboard } from "lucide-react";
 import FilterTabs from "@/components/FilterTabs";
+import Preloader from "@/components/Preloader";
 import SearchSortBar from "@/components/SearchSortBar";
 import ShortcutsDialog from "@/components/ShortcutsDialog";
 import TaskForm from "@/components/TaskForm";
@@ -37,6 +38,17 @@ type HomePageProps = {
   showLogout?: boolean;
 };
 
+const emptySubscribe = () => () => undefined;
+
+// True when this browser tab has not shown the local-dev welcome overlay yet
+function getWelcomeUnseen(): boolean {
+  try {
+    return sessionStorage.getItem("tm_welcome_seen") !== "1";
+  } catch {
+    return false;
+  }
+}
+
 // Main task manager: optimistic list, undo delete, and URL-synced filter/search/sort
 export default function HomePage({ showLogout = false }: HomePageProps) {
   const router = useRouter();
@@ -46,6 +58,12 @@ export default function HomePage({ showLogout = false }: HomePageProps) {
   const status = parseStatus(searchParams.get("status"));
   const query = searchParams.get("q") ?? "";
   const sort = parseSort(searchParams.get("sort"));
+  const welcomeFromUrl = searchParams.get("welcome") === "1";
+  const [showPreloader, setShowPreloader] = useState(welcomeFromUrl);
+  const [welcomeDismissed, setWelcomeDismissed] = useState(false);
+  const welcomeUnseen = useSyncExternalStore(emptySubscribe, getWelcomeUnseen, () => false);
+  const preloaderVisible =
+    !welcomeDismissed && (showPreloader || (!showLogout && welcomeUnseen));
 
   const [tasks, setTasks] = useState<Task[]>([]);
   const [pendingCount, setPendingCount] = useState(0);
@@ -67,6 +85,7 @@ export default function HomePage({ showLogout = false }: HomePageProps) {
   const replaceQuery = useCallback(
     (next: { status?: TaskStatus; q?: string; sort?: SortKey }) => {
       const params = new URLSearchParams(searchParams.toString());
+      params.delete("welcome");
       const nextStatus = next.status ?? parseStatus(params.get("status"));
       const nextQuery = next.q !== undefined ? next.q : (params.get("q") ?? "");
       const nextSort = next.sort ?? parseSort(params.get("sort"));
@@ -200,9 +219,23 @@ export default function HomePage({ showLogout = false }: HomePageProps) {
     };
   }, []);
 
+  // Drop welcome=1 from the URL so a refresh does not play the overlay again
+  useLayoutEffect(() => {
+    if (!welcomeFromUrl) {
+      return;
+    }
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("welcome");
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }, [pathname, router, searchParams, welcomeFromUrl]);
+
   // Keyboard shortcuts; ignored while typing except Escape
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
+      if (showPreloader || preloaderVisible) {
+        return;
+      }
       const target = event.target as HTMLElement | null;
       const tag = target?.tagName;
       const typing =
@@ -262,7 +295,7 @@ export default function HomePage({ showLogout = false }: HomePageProps) {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [closeShortcuts, editingTask, query, replaceQuery, shortcutsOpen]);
+  }, [closeShortcuts, editingTask, query, replaceQuery, shortcutsOpen, showPreloader, preloaderVisible]);
 
   // Create waits for Flask so the list uses the real id and timestamps
   async function handleCreate(data: TaskInput) {
@@ -429,8 +462,23 @@ export default function HomePage({ showLogout = false }: HomePageProps) {
     document.getElementById("task-list")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
+  // Hide the overlay and remember it for this browser tab (local-dev / no login gate)
+  function handlePreloaderFinished() {
+    setShowPreloader(false);
+    setWelcomeDismissed(true);
+    try {
+      sessionStorage.setItem("tm_welcome_seen", "1");
+    } catch {
+      // Private mode can block sessionStorage
+    }
+  }
+
   return (
     <>
+    {preloaderVisible ? (
+      <Preloader onFinished={handlePreloaderFinished} />
+    ) : null}
+    <div inert={preloaderVisible ? true : undefined}>
     <main className="mx-auto w-full max-w-[720px] px-4 py-8">
       <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
@@ -515,6 +563,7 @@ export default function HomePage({ showLogout = false }: HomePageProps) {
       onCompletedTasks={handleFooterCompleted}
       onOpenShortcuts={() => setShortcutsOpen(true)}
     />
+    </div>
     </>
   );
 }

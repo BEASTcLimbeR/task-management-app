@@ -84,6 +84,86 @@ body {
   }
 }
 
+/* Gooey loader (distances are 0.6× the original 200px demo) */
+@keyframes dot-1-move {
+  20% {
+    transform: scale(1);
+  }
+  45% {
+    transform: translate(9.6px, 7.2px) scale(0.45);
+  }
+  60% {
+    transform: translate(48px, 36px) scale(0.45);
+  }
+  80% {
+    transform: translate(48px, 36px) scale(0.45);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dot-2-move {
+  20% {
+    transform: scale(1);
+  }
+  45% {
+    transform: translate(-9.6px, 7.2px) scale(0.45);
+  }
+  60% {
+    transform: translate(-48px, 36px) scale(0.45);
+  }
+  80% {
+    transform: translate(-48px, 36px) scale(0.45);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dot-3-move {
+  20% {
+    transform: scale(1);
+  }
+  45% {
+    transform: translateY(-10.8px) scale(0.45);
+  }
+  60% {
+    transform: translateY(-54px) scale(0.45);
+  }
+  80% {
+    transform: translateY(-54px) scale(0.45);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes rotate-move {
+  55% {
+    transform: rotate(0deg);
+  }
+  80% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes index {
+  0%,
+  100% {
+    z-index: 3;
+  }
+  33.3% {
+    z-index: 2;
+  }
+  66.6% {
+    z-index: 1;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .animate-fade-up {
     animation: fade-up 0.35s ease-out;
