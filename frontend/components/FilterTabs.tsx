@@ -1,6 +1,7 @@
 "use client";
 
 import type { TaskStatus } from "@/lib/api";
+import styles from "./FilterTabs.module.css";
 
 type FilterTabsProps = {
   current: TaskStatus;
@@ -9,7 +10,7 @@ type FilterTabsProps = {
   onChange: (status: TaskStatus) => void;
 };
 
-// Switch between All / Pending / Completed and show how many tasks are in each
+// Switch between All / Pending / Completed with a sliding thumb and counts
 export default function FilterTabs({
   current,
   pendingCount,
@@ -24,7 +25,13 @@ export default function FilterTabs({
   ];
 
   return (
-    <div className="flex flex-wrap gap-2" role="tablist" aria-label="Task filters">
+    <div
+      className={styles.track}
+      role="tablist"
+      aria-label="Task filters"
+      data-selected={current}
+    >
+      <span className={styles.thumb} aria-hidden="true" />
       {tabs.map((tab) => {
         const selected = current === tab.id;
         return (
@@ -33,12 +40,8 @@ export default function FilterTabs({
             type="button"
             role="tab"
             aria-selected={selected}
+            className={selected ? `${styles.option} ${styles.selected}` : styles.option}
             onClick={() => onChange(tab.id)}
-            className={
-              selected
-                ? "rounded-full bg-sky-700 px-3 py-1.5 text-sm font-medium text-white focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none dark:bg-sky-600 dark:focus-visible:ring-sky-400"
-                : "rounded-full bg-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-300 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600 dark:focus-visible:ring-sky-400"
-            }
           >
             {tab.label} ({tab.count})
           </button>
