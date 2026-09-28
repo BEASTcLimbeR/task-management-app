@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Keyboard } from "lucide-react";
 import FilterTabs from "@/components/FilterTabs";
 import SearchSortBar from "@/components/SearchSortBar";
 import ShortcutsDialog from "@/components/ShortcutsDialog";
@@ -403,13 +404,23 @@ export default function HomePage() {
     <main className="mx-auto w-full max-w-[720px] px-4 py-8">
       <header className="mb-6 flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">My Tasks</h1>
+          <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Task Manager App</h1>
           <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
             {pendingCount} pending · {completedCount} completed
           </p>
-          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Press ? for shortcuts</p>
         </div>
-        <ThemeToggle />
+        <div className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            aria-label="Keyboard shortcuts"
+            title="Keyboard shortcuts (?)"
+            onClick={() => setShortcutsOpen(true)}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-200/80 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none dark:text-slate-300 dark:hover:bg-slate-800 dark:focus-visible:ring-sky-400"
+          >
+            <Keyboard className="h-4 w-4" aria-hidden="true" />
+          </button>
+          <ThemeToggle />
+        </div>
       </header>
 
       {apiDown ? (

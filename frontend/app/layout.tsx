@@ -10,11 +10,11 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Task Manager",
-  description: "A simple personal task manager",
+  title: "Task Manager App",
+  description: "A simple personal task manager app",
 };
 
-// Shared page shell: font, language, theme script, and the Task Manager title
+// Shared page shell: font, language, theme script, and the Task Manager App title
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${geistSans.variable} h-full antialiased`} suppressHydrationWarning>
