@@ -33,7 +33,7 @@ const H2 = "scroll-mt-6 text-xl font-bold text-slate-900 dark:text-slate-100";
 const BOX =
   "rounded-lg border border-slate-200 bg-white px-3 py-2 text-center text-sm text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200";
 
-// Static documentation for the Task Manager App, written from this repo
+// Documentation page for Task Manager App
 export default function DocsPage() {
   return (
     <>
@@ -119,28 +119,28 @@ export default function DocsPage() {
                     <td className={TD}>Frontend</td>
                     <td className={TD}>Next.js App Router, TypeScript, Tailwind CSS</td>
                     <td className={TD}>
-                      The UI is a Next.js App Router app. It talks to Flask over HTTP with <code>fetch</code> and never opens the database.
+                      I already build with Next.js and React, TypeScript catches mistakes early, and Tailwind keeps styling fast and consistent.
                     </td>
                   </tr>
                   <tr>
                     <td className={TD}>Backend</td>
                     <td className={TD}>Flask + flask-cors</td>
                     <td className={TD}>
-                      Flask is the REST API. CORS is limited to the Next.js origin (local URLs, or <code>FRONTEND_ORIGINS</code> in production).
+                      Flask is small and easy to read for a REST API this size. flask-cors lets only my frontend call it.
                     </td>
                   </tr>
                   <tr>
                     <td className={TD}>Database</td>
                     <td className={TD}>SQLite via sqlite3 (no ORM)</td>
                     <td className={TD}>
-                      SQLite comes with Python, so there is nothing extra to install. SQL lives in <code>db.py</code> / <code>app.py</code> so it is easy to read. Queries use <code>?</code> placeholders.
+                      SQLite needs no server or setup, fits a single-user app, and comes with Python. No ORM so the SQL is visible.
                     </td>
                   </tr>
                   <tr>
                     <td className={`${TD} border-b-0`}>Tests</td>
                     <td className={`${TD} border-b-0`}>pytest</td>
                     <td className={`${TD} border-b-0`}>
-                      pytest points at a temp file, so the real <code>tasks.db</code> is left alone.
+                      pytest is simple and runs against a temporary database, so tests never touch real data.
                     </td>
                   </tr>
                 </tbody>
@@ -315,6 +315,9 @@ export default function DocsPage() {
               </li>
               <li>
                 <strong className="text-slate-900 dark:text-slate-100">Priority-coloured cards.</strong> Cards stay on the list surface colour; a light wash and a left accent strip use CSS variables for low / medium / high in both light and dark themes.
+              </li>
+              <li>
+                <strong className="text-slate-900 dark:text-slate-100">Login for the live demo.</strong> A small proxy checks a signed, httpOnly session cookie and sends visitors to /login; credentials live in Vercel environment variables, not in the code. Locally, with those unset, there is no login.
               </li>
             </ul>
           </section>

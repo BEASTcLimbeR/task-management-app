@@ -1,4 +1,4 @@
-# Personal Task Manager
+# Task Manager App
 
 I made this as a small personal task list. The backend is a Flask REST API with SQLite. The frontend is Next.js, and it talks to that API over HTTP. The browser never opens the database.
 
@@ -10,7 +10,7 @@ The live demo sits behind a simple login. Username, password and a signing secre
 
 ## What it can do
 
-You can add a task (title, description, priority, due date), edit it, tick it off, or delete it. The list can be filtered to All, Pending, or Completed, and the tabs show how many tasks are in each group.
+You can add a task (title, description, priority, due date), edit it, tick it off, or delete it. The list can be filtered to All, Pending, or Completed, and the tabs show how many tasks are in each group. Task cards are colour-coded by priority (green low, amber medium, red high), with the priority also written as text.
 
 Ticking a task off, editing, or deleting it updates the list straight away; if the API call fails, the old data comes back and you see an error. Delete has a short Undo. You can search and sort on the page, and the filter, search, and sort stay in the URL so a refresh or a shared link keeps the same view. Press ? for keyboard shortcuts. There is a dark mode toggle as well.
 
@@ -185,8 +185,16 @@ task-management-app/
 │   └── tests/test_api.py
 └── frontend/
     ├── app/
+    │   ├── login/
+    │   └── docs/
     ├── components/
-    ├── lib/api.ts
+    │   └── ui/
+    ├── lib/
+    │   ├── api.ts
+    │   ├── auth.ts
+    │   └── view.ts
+    ├── public/
+    ├── proxy.ts
     ├── .env.example
     └── package.json
 ```
@@ -199,7 +207,7 @@ PUT is for the edit form (the details). PATCH is for the checkbox, so completing
 
 ## If I spent more time on this
 
-Login would be the first thing. After that, search, paging, and moving off SQLite if it ever had to run as a real hosted app. Docker would make the two-terminal setup nicer too.
+If I kept going, I'd add proper user accounts so each person sees only their own tasks, and protect the Flask API itself (right now the login only guards the web UI). After that: paging for long lists, moving from SQLite to PostgreSQL for a real hosted app, and Docker so it runs with one command.
 
 ## Deployment
 
