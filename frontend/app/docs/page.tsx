@@ -28,8 +28,8 @@ const TABLE = "w-full min-w-[32rem] border-collapse text-left text-sm";
 const TH = "border-b border-slate-200 bg-slate-50 px-3 py-2 font-medium text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100";
 const TD = "border-b border-slate-200 px-3 py-2 align-top text-slate-700 dark:border-slate-700 dark:text-slate-300";
 const PRE =
-  "mt-3 overflow-x-auto rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs leading-relaxed text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200";
-const H2 = "scroll-mt-6 text-xl font-semibold text-slate-900 dark:text-slate-100";
+  "mt-3 overflow-x-auto rounded-lg border border-slate-200 bg-slate-50 p-3 font-mono text-xs leading-relaxed text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200";
+const H2 = "scroll-mt-6 text-xl font-bold text-slate-900 dark:text-slate-100";
 const BOX =
   "rounded-lg border border-slate-200 bg-white px-3 py-2 text-center text-sm text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200";
 
@@ -38,19 +38,19 @@ export default function DocsPage() {
   return (
     <>
       <main className="mx-auto w-full max-w-[760px] px-4 py-8">
-        <header className="mb-8 flex items-start justify-between gap-3">
+        <header className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
             <Link href="/" className={`${LINK_CLASS} text-sm`}>
               ← Back to app
             </Link>
-            <h1 className="mt-3 text-2xl font-semibold text-slate-900 dark:text-slate-100">
+            <h1 className="mt-3 text-2xl font-bold text-slate-900 dark:text-slate-100">
               Documentation
             </h1>
             <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
               How this personal task manager is built, from the browser down to SQLite.
             </p>
           </div>
-          <div className="flex shrink-0 items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2 self-end sm:self-start">
             {isAuthGateEnabled() ? <LogoutButton /> : null}
             <ThemeToggle />
           </div>

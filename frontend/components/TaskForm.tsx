@@ -71,7 +71,7 @@ export default function TaskForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
-      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+      <h2 className="text-sm font-bold text-slate-700 dark:text-slate-200">
         {isEditing ? "Edit task" : "Add a task"}
       </h2>
       <label className="block">

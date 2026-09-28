@@ -115,7 +115,7 @@ export default function ShortcutsDialog({ open, onClose }: ShortcutsDialogProps)
         className="animate-dialog-in relative z-10 w-full max-w-md rounded-2xl border border-slate-200 bg-white p-4 shadow-xl dark:border-slate-700 dark:bg-slate-900 sm:p-6"
       >
         <div className="mb-3 flex items-start justify-between gap-3">
-          <h2 id={titleId} className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+          <h2 id={titleId} className="text-lg font-bold text-slate-900 dark:text-slate-100">
             Keyboard shortcuts
           </h2>
           <button

@@ -2,13 +2,23 @@
 
 // Toggle design adapted from Uiverse.io by chase2k25
 
-import { useEffect, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import styles from "./ThemeToggle.module.css";
 
 // Apply the theme class on <html> and remember the choice in localStorage
 function applyTheme(dark: boolean) {
   document.documentElement.classList.toggle("dark", dark);
   localStorage.setItem("theme", dark ? "dark" : "light");
+}
+
+// Play the switch click quietly so it is not too loud
+function playToggleClick(soundRef: { current: HTMLAudioElement | null }) {
+  if (!soundRef.current) {
+    soundRef.current = new Audio("/toggle.mp3");
+    soundRef.current.volume = 0.25;
+  }
+  soundRef.current.currentTime = 0;
+  void soundRef.current.play();
 }
 
 // Build the pill, knob, and LED (colours come from html.dark in CSS)
@@ -26,6 +36,7 @@ function SwitchFace() {
 export default function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const soundRef = useRef<HTMLAudioElement | null>(null);
 
   // After hydration, read the class theme-init.js already set (avoids a mismatch)
   useEffect(() => {
@@ -53,6 +64,7 @@ export default function ThemeToggle() {
     const next = !document.documentElement.classList.contains("dark");
     applyTheme(next);
     setIsDark(next);
+    playToggleClick(soundRef);
   }
 
   // Space and Enter both flip the switch (role=switch is not always activated by the browser)

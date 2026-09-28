@@ -4,7 +4,21 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+h1,
+h2 {
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: var(--font-mono), ui-monospace, monospace;
 }
 
 html {
