@@ -1,26 +1,27 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
-import {
-  createTask,
-  isUnreachableError,
-  updateTask,
-  type Priority,
-  type Task,
-} from "@/lib/api";
+import { useState, type FormEvent, type RefObject } from "react";
+import { isUnreachableError, type Priority, type Task, type TaskInput } from "@/lib/api";
 
 type TaskFormProps = {
   editingTask: Task | null;
+  titleInputRef: RefObject<HTMLInputElement | null>;
   onCancel: () => void;
-  onSuccess: () => Promise<void>;
+  onCreate: (data: TaskInput) => Promise<void>;
+  onUpdate: (id: number, data: TaskInput) => Promise<void>;
   onUnreachable: () => void;
 };
+
+const fieldClass =
+  "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-sky-500 focus-visible:ring-2 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:ring-sky-400";
 
 // Add or edit a task; the same fields are used in both modes
 export default function TaskForm({
   editingTask,
+  titleInputRef,
   onCancel,
-  onSuccess,
+  onCreate,
+  onUpdate,
   onUnreachable,
 }: TaskFormProps) {
   const [title, setTitle] = useState(editingTask?.title ?? "");
@@ -32,12 +33,12 @@ export default function TaskForm({
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
-  // Save a new task or update the one being edited
+  // Save a new task (waits for the server id) or submit an edit for an optimistic update
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
     setSaving(true);
-    const data = {
+    const data: TaskInput = {
       title: title.trim(),
       description,
       priority,
@@ -45,15 +46,14 @@ export default function TaskForm({
     };
     try {
       if (editingTask) {
-        await updateTask(editingTask.id, data);
+        await onUpdate(editingTask.id, data);
       } else {
-        await createTask(data);
+        await onCreate(data);
+        setTitle("");
+        setDescription("");
+        setPriority("medium");
+        setDueDate("");
       }
-      setTitle("");
-      setDescription("");
-      setPriority("medium");
-      setDueDate("");
-      await onSuccess();
     } catch (err) {
       if (isUnreachableError(err)) {
         onUnreachable();
@@ -69,54 +69,56 @@ export default function TaskForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
-      <h2 className="text-sm font-semibold text-slate-700">
+      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">
         {isEditing ? "Edit task" : "Add a task"}
       </h2>
       <label className="block">
-        <span className="mb-1 block text-sm text-slate-600">Title</span>
+        <span className="mb-1 block text-sm text-slate-600 dark:text-slate-300">Title</span>
         <input
+          ref={titleInputRef}
+          id="new-task-title"
           type="text"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
           required
           maxLength={200}
-          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none ring-sky-500 focus:ring-2"
+          className={fieldClass}
         />
       </label>
       <label className="block">
-        <span className="mb-1 block text-sm text-slate-600">Description</span>
+        <span className="mb-1 block text-sm text-slate-600 dark:text-slate-300">Description</span>
         <textarea
           value={description}
           onChange={(event) => setDescription(event.target.value)}
           rows={3}
-          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none ring-sky-500 focus:ring-2"
+          className={fieldClass}
         />
       </label>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <label className="block">
-          <span className="mb-1 block text-sm text-slate-600">Priority</span>
+        <label className="block min-w-0">
+          <span className="mb-1 block text-sm text-slate-600 dark:text-slate-300">Priority</span>
           <select
             value={priority}
             onChange={(event) => setPriority(event.target.value as Priority)}
-            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-sky-500 focus:ring-2"
+            className={fieldClass}
           >
             <option value="low">Low</option>
             <option value="medium">Medium</option>
             <option value="high">High</option>
           </select>
         </label>
-        <label className="block">
-          <span className="mb-1 block text-sm text-slate-600">Due date</span>
+        <label className="block min-w-0">
+          <span className="mb-1 block text-sm text-slate-600 dark:text-slate-300">Due date</span>
           <input
             type="date"
             value={dueDate}
             onChange={(event) => setDueDate(event.target.value)}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none ring-sky-500 focus:ring-2"
+            className={fieldClass}
           />
         </label>
       </div>
       {error ? (
-        <p className="text-sm text-red-600" role="alert">
+        <p className="text-sm text-red-600 dark:text-red-400" role="alert">
           {error}
         </p>
       ) : null}
@@ -124,7 +126,7 @@ export default function TaskForm({
         <button
           type="submit"
           disabled={saving}
-          className="rounded-lg bg-sky-700 px-4 py-2 text-sm font-medium text-white hover:bg-sky-800 disabled:cursor-not-allowed disabled:opacity-60"
+          className="rounded-lg bg-sky-700 px-4 py-2 text-sm font-medium text-white hover:bg-sky-800 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60 dark:bg-sky-600 dark:hover:bg-sky-500 dark:focus-visible:ring-sky-400"
         >
           {saving ? "Saving..." : isEditing ? "Save changes" : "Add task"}
         </button>
@@ -132,7 +134,7 @@ export default function TaskForm({
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-lg border border-slate-300 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
+            className="rounded-lg border border-slate-300 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800 dark:focus-visible:ring-sky-400"
           >
             Cancel
           </button>

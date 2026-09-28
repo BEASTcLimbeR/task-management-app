@@ -36,8 +36,8 @@ export default function FilterTabs({
             onClick={() => onChange(tab.id)}
             className={
               selected
-                ? "rounded-full bg-sky-700 px-3 py-1.5 text-sm font-medium text-white"
-                : "rounded-full bg-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-300"
+                ? "rounded-full bg-sky-700 px-3 py-1.5 text-sm font-medium text-white focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none dark:bg-sky-600 dark:focus-visible:ring-sky-400"
+                : "rounded-full bg-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-300 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600 dark:focus-visible:ring-sky-400"
             }
           >
             {tab.label} ({tab.count})
