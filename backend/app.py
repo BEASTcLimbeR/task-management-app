@@ -255,19 +255,26 @@ def delete_task(task_id):
     return ("", 204)
 
 
+# Read FRONTEND_ORIGINS (comma-separated), or the local Next.js URLs
+def get_frontend_origins():
+    raw = os.environ.get(
+        "FRONTEND_ORIGINS",
+        "http://localhost:3000,http://127.0.0.1:3000",
+    )
+    origins = []
+    for part in raw.split(","):
+        origin = part.strip().rstrip("/")
+        if origin:
+            origins.append(origin)
+    return origins
+
+
 # Build a Flask app, turn on CORS for the Next.js frontend, and create the table
 def create_app():
     application = Flask(__name__)
     CORS(
         application,
-        resources={
-            r"/api/*": {
-                "origins": [
-                    "http://localhost:3000",
-                    "http://127.0.0.1:3000",
-                ]
-            }
-        },
+        resources={r"/api/*": {"origins": get_frontend_origins()}},
     )
     application.register_error_handler(ValidationError, handle_validation_error)
     application.add_url_rule("/api/tasks", "list_tasks", list_tasks, methods=["GET"])

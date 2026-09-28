@@ -192,3 +192,13 @@ PUT is for the edit form (the details). PATCH is for the checkbox, so completing
 ## If I spent more time on this
 
 Login would be the first thing. After that, search, paging, and moving off SQLite if it ever had to run as a real hosted app. Docker would make the two-terminal setup nicer too.
+
+## Deployment
+
+I run the API on PythonAnywhere and the UI on Vercel.
+
+On PythonAnywhere: clone this repo, make a venv, `pip install -r requirements.txt`, then add a web app with manual configuration whose source folder is `backend/`. The WSGI file should import `app` from `app.py` (the host loads the module; it does not run `python app.py`). Set `FRONTEND_ORIGINS` to your Vercel URL (no trailing slash), for example `https://your-app.vercel.app`.
+
+On Vercel: set the root directory to `frontend` and set `NEXT_PUBLIC_API_URL` to the PythonAnywhere URL, for example `https://yourusername.pythonanywhere.com`.
+
+SQLite works on PythonAnywhere because the account has a persistent disk, so `backend/tasks.db` stays between reloads.
