@@ -1,9 +1,15 @@
-/* Neumorphic Low / Medium / High control — colours from --priority-* on html */
+/* Pressed track + raised selected option — colours from --neu-surface / --priority-*-accent */
 
-.group {
+.track {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.2rem;
+  padding: 0.22rem;
+  border-radius: 999px;
+  background: var(--neu-surface);
+  box-shadow:
+    inset 3px 3px 6px var(--neu-surface-dark),
+    inset -3px -3px 6px var(--neu-surface-light);
 }
 
 .option {
@@ -15,11 +21,9 @@
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #334155;
-  background: var(--neu-neutral-bg);
-  box-shadow:
-    5px 5px 10px var(--neu-neutral-dark),
-    -4px -4px 8px var(--neu-neutral-light);
+  color: #64748b;
+  background: transparent;
+  box-shadow: none;
   transition:
     box-shadow 0.2s ease,
     background 0.2s ease,
@@ -27,40 +31,24 @@
 }
 
 :global(html.dark) .option {
-  color: #e2e8f0;
-}
-
-.option:hover:not(.selected) {
-  box-shadow:
-    6px 6px 12px var(--neu-neutral-dark),
-    -5px -5px 10px var(--neu-neutral-light);
+  color: #94a3b8;
 }
 
 .selected {
+  --p-accent: var(--priority-medium-accent);
+  color: var(--p-accent);
+  background: color-mix(in srgb, var(--p-accent) var(--priority-selected-wash), var(--neu-surface));
   box-shadow:
-    inset 4px 4px 8px var(--p-dark, var(--neu-neutral-dark)),
-    inset -4px -4px 8px var(--p-light, var(--neu-neutral-light));
+    4px 4px 8px var(--neu-surface-dark),
+    -3px -3px 6px var(--neu-surface-light);
 }
 
 .option[data-priority="low"].selected {
-  --p-dark: var(--priority-low-dark);
-  --p-light: var(--priority-low-light);
-  background: var(--priority-low-bg);
-  color: var(--priority-low-text);
-}
-
-.option[data-priority="medium"].selected {
-  --p-dark: var(--priority-medium-dark);
-  --p-light: var(--priority-medium-light);
-  background: var(--priority-medium-bg);
-  color: var(--priority-medium-text);
+  --p-accent: var(--priority-low-accent);
 }
 
 .option[data-priority="high"].selected {
-  --p-dark: var(--priority-high-dark);
-  --p-light: var(--priority-high-light);
-  background: var(--priority-high-bg);
-  color: var(--priority-high-text);
+  --p-accent: var(--priority-high-accent);
 }
 
 .option:focus {

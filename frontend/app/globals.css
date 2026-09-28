@@ -9,47 +9,28 @@
 
 html {
   color-scheme: light;
-  /* Priority tints + neumorphic shadows (cards, segmented control) */
-  --priority-low-bg: #e8f5ec;
-  --priority-low-light: #ffffff;
-  --priority-low-dark: #c3d9ca;
-  --priority-low-accent: #2f9e5b;
-  --priority-low-text: #1b6a3d;
-  --priority-medium-bg: #fbf1e0;
-  --priority-medium-light: #ffffff;
-  --priority-medium-dark: #dccbab;
-  --priority-medium-accent: #c98a1b;
-  --priority-medium-text: #8a5e12;
-  --priority-high-bg: #f9e6e6;
-  --priority-high-light: #ffffff;
-  --priority-high-dark: #d8bcbc;
-  --priority-high-accent: #d64545;
-  --priority-high-text: #b42323;
-  --neu-neutral-bg: #f8f8f8;
-  --neu-neutral-light: #ffffff;
-  --neu-neutral-dark: #c5c5c5;
+  /* Surface = list/form card (bg-white). Shadows are lighter/darker of that base. */
+  --neu-surface: #ffffff;
+  --neu-surface-light: #ffffff;
+  --neu-surface-dark: #b8c4d1;
+  --priority-wash: 8%;
+  --priority-selected-wash: 10%;
+  --priority-low-accent: #16a34a;
+  --priority-medium-accent: #d97706;
+  --priority-high-accent: #dc2626;
 }
 
 html.dark {
   color-scheme: dark;
-  --priority-low-bg: #1d2b24;
-  --priority-low-light: #26382f;
-  --priority-low-dark: #141e19;
+  /* Surface = list/form card (slate-900). Shadows are lighter/darker of that navy. */
+  --neu-surface: #0f172a;
+  --neu-surface-light: #1e293b;
+  --neu-surface-dark: #070b14;
+  --priority-wash: 7%;
+  --priority-selected-wash: 10%;
   --priority-low-accent: #4ade80;
-  --priority-low-text: #4ade80;
-  --priority-medium-bg: #2e2819;
-  --priority-medium-light: #3b3421;
-  --priority-medium-dark: #211c11;
   --priority-medium-accent: #fbbf24;
-  --priority-medium-text: #fbbf24;
-  --priority-high-bg: #2f1f21;
-  --priority-high-light: #3d292b;
-  --priority-high-dark: #221617;
   --priority-high-accent: #f87171;
-  --priority-high-text: #f87171;
-  --neu-neutral-bg: #2a2d34;
-  --neu-neutral-light: #383c45;
-  --neu-neutral-dark: #1c1e22;
 }
 
 body {

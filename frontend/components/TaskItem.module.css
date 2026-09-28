@@ -1,11 +1,10 @@
-/* Neumorphic task card — colours come from --priority-* variables on html */
+/* Neumorphic task card — base is --neu-surface; priority is accent only */
 
 .card {
-  --p-bg: var(--priority-medium-bg);
-  --p-light: var(--priority-medium-light);
-  --p-dark: var(--priority-medium-dark);
   --p-accent: var(--priority-medium-accent);
-  --p-text: var(--priority-medium-text);
+  --p-bg: var(--neu-surface);
+  --p-light: var(--neu-surface-light);
+  --p-dark: var(--neu-surface-dark);
   position: relative;
   display: flex;
   min-width: 0;
@@ -13,10 +12,16 @@
   padding: 0.85rem 0.9rem 0.85rem 1.1rem;
   border: none;
   border-radius: 1rem;
-  background: var(--p-bg);
+  background-color: var(--neu-surface);
+  background-image: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--p-accent) var(--priority-wash), transparent),
+    transparent 60%
+  );
   box-shadow:
-    6px 6px 14px var(--p-dark),
-    -6px -6px 14px var(--p-light);
+    inset 3px 0 0 var(--p-accent),
+    6px 6px 14px var(--neu-surface-dark),
+    -6px -6px 14px var(--neu-surface-light);
   transition:
     box-shadow 0.25s ease,
     transform 0.25s ease,
@@ -25,36 +30,18 @@
 }
 
 .card[data-priority="low"] {
-  --p-bg: var(--priority-low-bg);
-  --p-light: var(--priority-low-light);
-  --p-dark: var(--priority-low-dark);
   --p-accent: var(--priority-low-accent);
-  --p-text: var(--priority-low-text);
 }
 
 .card[data-priority="high"] {
-  --p-bg: var(--priority-high-bg);
-  --p-light: var(--priority-high-light);
-  --p-dark: var(--priority-high-dark);
   --p-accent: var(--priority-high-accent);
-  --p-text: var(--priority-high-text);
-}
-
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 4px;
-  border-radius: 1rem 0 0 1rem;
-  background: var(--p-accent);
 }
 
 .card:hover:not(.completed) {
   box-shadow:
-    8px 8px 18px var(--p-dark),
-    -8px -8px 18px var(--p-light);
+    inset 3px 0 0 var(--p-accent),
+    8px 8px 18px var(--neu-surface-dark),
+    -8px -8px 18px var(--neu-surface-light);
   transform: translateY(-1px);
 }
 
@@ -66,9 +53,11 @@
 .completed {
   opacity: 0.6;
   filter: saturate(0.65);
+  background-image: none;
   box-shadow:
-    inset 5px 5px 12px var(--p-dark),
-    inset -5px -5px 12px var(--p-light);
+    inset 3px 0 0 var(--p-accent),
+    inset 5px 5px 12px var(--neu-surface-dark),
+    inset -5px -5px 12px var(--neu-surface-light);
 }
 
 .checkbox {
@@ -80,27 +69,28 @@
   border: none;
   border-radius: 0.35rem;
   cursor: pointer;
-  background: var(--p-bg);
+  background: var(--neu-surface);
   box-shadow:
-    3px 3px 6px var(--p-dark),
-    -2px -2px 5px var(--p-light);
+    0 0 0 2px var(--p-accent),
+    inset 1px 1px 3px var(--neu-surface-dark);
   position: relative;
 }
 
 .checkbox:checked {
+  background: var(--p-accent);
   box-shadow:
-    inset 3px 3px 6px var(--p-dark),
-    inset -2px -2px 5px var(--p-light);
+    0 0 0 2px var(--p-accent),
+    inset 1px 1px 3px rgba(0, 0, 0, 0.28);
 }
 
 .checkbox:checked::after {
   content: "";
   position: absolute;
-  left: 0.28rem;
-  top: 0.08rem;
+  left: 0.3rem;
+  top: 0.1rem;
   width: 0.28rem;
   height: 0.5rem;
-  border: solid var(--p-text);
+  border: solid #ffffff;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
@@ -111,7 +101,7 @@
 
 .checkbox:focus-visible {
   outline: 2px solid var(--p-accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
 .body {
@@ -153,8 +143,8 @@
 
 .priorityLabel {
   font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--p-text);
+  font-weight: 500;
+  color: var(--p-accent);
 }
 
 .description {

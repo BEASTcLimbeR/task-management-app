@@ -17,7 +17,7 @@ const OPTIONS: { id: Priority; label: string }[] = [
 // Raised / pressed Low–Medium–High switch used on the add and edit form
 export default function PriorityControl({ value, onChange }: PriorityControlProps) {
   return (
-    <div className={styles.group} role="radiogroup" aria-label="Priority">
+    <div className={styles.track} role="radiogroup" aria-label="Priority">
       {OPTIONS.map((option) => {
         const selected = value === option.id;
         return (
