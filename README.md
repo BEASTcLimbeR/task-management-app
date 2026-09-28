@@ -4,6 +4,10 @@ I made this as a small personal task list. The backend is a Flask REST API with 
 
 Live demo: https://rutvij-task-manager-app.vercel.app
 
+## Login
+
+The live demo sits behind a simple login. Username, password and a signing secret are set as `AUTH_USERNAME`, `AUTH_PASSWORD` and `AUTH_SECRET` environment variables on Vercel. Locally I leave those unset, so there is no login screen.
+
 ## What it can do
 
 You can add a task (title, description, priority, due date), edit it, tick it off, or delete it. The list can be filtered to All, Pending, or Completed, and the tabs show how many tasks are in each group.

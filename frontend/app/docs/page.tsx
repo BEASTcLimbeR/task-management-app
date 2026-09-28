@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
+import LogoutButton from "@/components/LogoutButton";
 import { Footer } from "@/components/ui/footer-section";
+import { isAuthGateEnabled } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "Documentation · Task Manager App",
@@ -48,7 +50,10 @@ export default function DocsPage() {
               How this personal task manager is built, from the browser down to SQLite.
             </p>
           </div>
-          <ThemeToggle />
+          <div className="flex shrink-0 items-center gap-2">
+            {isAuthGateEnabled() ? <LogoutButton /> : null}
+            <ThemeToggle />
+          </div>
         </header>
 
         <nav aria-label="Table of contents" className="mb-10 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900">

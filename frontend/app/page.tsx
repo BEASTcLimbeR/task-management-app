@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import HomePage from "@/components/HomePage";
+import { isAuthGateEnabled } from "@/lib/auth";
 
 // Placeholder shown while the client URL state (useSearchParams) is ready
 function HomeFallback() {
@@ -14,7 +15,7 @@ function HomeFallback() {
 export default function Page() {
   return (
     <Suspense fallback={<HomeFallback />}>
-      <HomePage />
+      <HomePage showLogout={isAuthGateEnabled()} />
     </Suspense>
   );
 }

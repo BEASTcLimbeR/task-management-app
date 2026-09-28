@@ -10,6 +10,7 @@ import TaskForm from "@/components/TaskForm";
 import TaskList from "@/components/TaskList";
 import ThemeToggle from "@/components/ThemeToggle";
 import Toasts, { type ToastItem } from "@/components/Toasts";
+import LogoutButton from "@/components/LogoutButton";
 import { Footer } from "@/components/ui/footer-section";
 import {
   API_URL,
@@ -32,8 +33,12 @@ type PendingDelete = {
   toastId: string;
 };
 
+type HomePageProps = {
+  showLogout?: boolean;
+};
+
 // Main task manager: optimistic list, undo delete, and URL-synced filter/search/sort
-export default function HomePage() {
+export default function HomePage({ showLogout = false }: HomePageProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -444,6 +449,7 @@ export default function HomePage() {
           >
             <Keyboard className="h-4 w-4" aria-hidden="true" />
           </button>
+          {showLogout ? <LogoutButton /> : null}
           <ThemeToggle />
         </div>
       </header>
