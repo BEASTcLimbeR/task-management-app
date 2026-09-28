@@ -2,9 +2,13 @@
 
 I made this as a small personal task list. The backend is a Flask REST API with SQLite. The frontend is Next.js, and it talks to that API over HTTP. The browser never opens the database.
 
+Live demo: https://rutvij-task-manager-app.vercel.app
+
 ## What it can do
 
 You can add a task (title, description, priority, due date), edit it, tick it off, or delete it. The list can be filtered to All, Pending, or Completed, and the tabs show how many tasks are in each group.
+
+Ticking a task off, editing, or deleting it updates the list straight away; if the API call fails, the old data comes back and you see an error. Delete has a short Undo. You can search and sort on the page, and the filter, search, and sort stay in the URL so a refresh or a shared link keeps the same view. Press ? for keyboard shortcuts. There is a dark mode toggle as well.
 
 The API checks the data before it is saved. If something is wrong (empty title, bad date, and so on) you get a JSON error back. On the page, a task with a due date before today is marked overdue until you complete it.
 
