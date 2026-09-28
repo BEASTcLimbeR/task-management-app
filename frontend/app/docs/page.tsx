@@ -37,20 +37,20 @@ const BOX =
 export default function DocsPage() {
   return (
     <>
-      <main className="mx-auto w-full min-w-0 max-w-[760px] px-4 py-8 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))]">
-        <header className="mb-8 flex items-start justify-between gap-3">
-          <div className="min-w-0 flex-1">
+      <main className="page-gutter mx-auto w-full min-w-0 max-w-[760px] py-8">
+        <header className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0 w-full sm:flex-1">
             <Link href="/" className={`${LINK_CLASS} text-sm`}>
               ← Back to app
             </Link>
-            <h1 className="mt-3 text-xl font-bold leading-snug break-words text-slate-900 sm:text-2xl dark:text-slate-100">
+            <h1 className="mt-3 text-2xl font-bold leading-snug break-words text-slate-900 dark:text-slate-100">
               Documentation
             </h1>
             <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
               How this personal task manager is built, from the browser down to SQLite.
             </p>
           </div>
-          <div className="flex shrink-0 items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2 self-end sm:self-start">
             {isAuthGateEnabled() ? <LogoutButton /> : null}
             <ThemeToggle />
           </div>

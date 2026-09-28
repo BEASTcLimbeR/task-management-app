@@ -94,6 +94,23 @@
   box-shadow: 0 0 8px 2px rgba(100, 170, 255, 0.85);
 }
 
+@media (max-width: 639px) {
+  .switch,
+  .track {
+    width: 52px;
+    height: 26px;
+  }
+
+  .knob {
+    width: 28px;
+    height: 20px;
+  }
+
+  :global(html.dark) .knob {
+    transform: translateX(20px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .track,
   .knob,

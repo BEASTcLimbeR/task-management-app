@@ -24,7 +24,6 @@ samp {
 html {
   color-scheme: light;
   max-width: 100%;
-  overflow-x: clip;
   text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   /* Surface = list/form card (bg-white). Shadows are lighter/darker of that base. */
@@ -54,7 +53,19 @@ html.dark {
 body {
   margin: 0;
   max-width: 100%;
-  overflow-x: clip;
+}
+
+/* Side padding that always applies; extra inset on notched iPhones if the browser supports it */
+.page-gutter {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@supports (padding: max(0px)) {
+  .page-gutter {
+    padding-left: max(1rem, env(safe-area-inset-left, 0px));
+    padding-right: max(1rem, env(safe-area-inset-right, 0px));
+  }
 }
 
 @keyframes fade-up {
