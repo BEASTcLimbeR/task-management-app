@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, type FormEvent, type RefObject } from "react";
+import DueDatePicker from "@/components/DueDatePicker";
+import PriorityControl from "@/components/PriorityControl";
 import { isUnreachableError, type Priority, type Task, type TaskInput } from "@/lib/api";
 
 type TaskFormProps = {
@@ -95,27 +97,14 @@ export default function TaskForm({
         />
       </label>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <label className="block min-w-0">
+        <div className="block min-w-0">
           <span className="mb-1 block text-sm text-slate-600 dark:text-slate-300">Priority</span>
-          <select
-            value={priority}
-            onChange={(event) => setPriority(event.target.value as Priority)}
-            className={fieldClass}
-          >
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-        </label>
-        <label className="block min-w-0">
+          <PriorityControl value={priority} onChange={setPriority} />
+        </div>
+        <div className="block min-w-0">
           <span className="mb-1 block text-sm text-slate-600 dark:text-slate-300">Due date</span>
-          <input
-            type="date"
-            value={dueDate}
-            onChange={(event) => setDueDate(event.target.value)}
-            className={fieldClass}
-          />
-        </label>
+          <DueDatePicker value={dueDate} onChange={setDueDate} className={fieldClass} />
+        </div>
       </div>
       {error ? (
         <p className="text-sm text-red-600 dark:text-red-400" role="alert">

@@ -1,0 +1,91 @@
+/* Neumorphic Low / Medium / High control — colours from --priority-* on html */
+
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.option {
+  flex: 1 1 0;
+  min-width: 4.5rem;
+  border: none;
+  border-radius: 999px;
+  padding: 0.4rem 0.65rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #334155;
+  background: var(--neu-neutral-bg);
+  box-shadow:
+    5px 5px 10px var(--neu-neutral-dark),
+    -4px -4px 8px var(--neu-neutral-light);
+  transition:
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+:global(html.dark) .option {
+  color: #e2e8f0;
+}
+
+.option:hover:not(.selected) {
+  box-shadow:
+    6px 6px 12px var(--neu-neutral-dark),
+    -5px -5px 10px var(--neu-neutral-light);
+}
+
+.selected {
+  box-shadow:
+    inset 4px 4px 8px var(--p-dark, var(--neu-neutral-dark)),
+    inset -4px -4px 8px var(--p-light, var(--neu-neutral-light));
+}
+
+.option[data-priority="low"].selected {
+  --p-dark: var(--priority-low-dark);
+  --p-light: var(--priority-low-light);
+  background: var(--priority-low-bg);
+  color: var(--priority-low-text);
+}
+
+.option[data-priority="medium"].selected {
+  --p-dark: var(--priority-medium-dark);
+  --p-light: var(--priority-medium-light);
+  background: var(--priority-medium-bg);
+  color: var(--priority-medium-text);
+}
+
+.option[data-priority="high"].selected {
+  --p-dark: var(--priority-high-dark);
+  --p-light: var(--priority-high-light);
+  background: var(--priority-high-bg);
+  color: var(--priority-high-text);
+}
+
+.option:focus {
+  outline: none;
+}
+
+.option:focus-visible {
+  outline: 2px solid #0284c7;
+  outline-offset: 2px;
+}
+
+.option[data-priority="low"].selected:focus-visible {
+  outline-color: var(--priority-low-accent);
+}
+
+.option[data-priority="medium"].selected:focus-visible {
+  outline-color: var(--priority-medium-accent);
+}
+
+.option[data-priority="high"].selected:focus-visible {
+  outline-color: var(--priority-high-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .option {
+    transition: none;
+  }
+}
