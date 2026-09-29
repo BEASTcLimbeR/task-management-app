@@ -1,5 +1,7 @@
 # Task Manager App
 
+[![CI](https://github.com/BEASTcLimbeR/task-management-app/actions/workflows/ci.yml/badge.svg)](https://github.com/BEASTcLimbeR/task-management-app/actions/workflows/ci.yml)
+
 I made this as a small personal task list. The backend is a Flask REST API with SQLite. The frontend is Next.js, and it talks to that API over HTTP. The browser never opens the database.
 
 Live demo: https://rutvij-task-manager-app.vercel.app
@@ -22,6 +24,7 @@ The API checks the data before it is saved. If something is wrong (empty title, 
 - Database: SQLite through the built-in `sqlite3` module (nothing extra to install)
 - Frontend: Next.js (App Router), TypeScript, Tailwind CSS
 - Tests: pytest
+- Docker, GitHub Actions (CI)
 
 ## How the pieces fit
 
@@ -81,6 +84,14 @@ cp .env.example .env.local
 ```
 
 Windows: `copy .env.example .env.local`
+
+## Run with Docker
+
+```bash
+docker compose up --build
+```
+
+Then open http://localhost:3000. Task data is stored in a Docker volume, so it stays when you stop the containers.
 
 ## Tests
 

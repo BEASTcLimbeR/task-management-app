@@ -1,0 +1,23 @@
+services:
+  api:
+    build: ./backend
+    ports:
+      - "5001:5001"
+    environment:
+      FRONTEND_ORIGINS: http://localhost:3000
+      TASKS_DB: /app/data/tasks.db
+    volumes:
+      - api-data:/app/data
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:5001
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  api-data:

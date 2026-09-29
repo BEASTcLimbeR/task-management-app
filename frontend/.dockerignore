@@ -1,0 +1,11 @@
+node_modules
+.next
+.env*
+!.env.example
+AGENTS.md
+CLAUDE.md
+.vercel
+.git
+.gitignore
+*.md
+README.md
